@@ -47,6 +47,12 @@
                   <td>5 hari</td>
                   <td>8 hari</td>
                 </tr>
+                <tr>
+                  <td></td>
+                  <td><input type="checkbox" /></td>
+                  <td><input type="checkbox" /></td>
+                  <td><input type="checkbox" /></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -55,6 +61,3 @@
     </div>
   {/if}
 </div>
-<a href="#/laporan" class="fixed bottom-2 left-2 z-[99] btn btn-success"
-  >+ Laporan</a
->

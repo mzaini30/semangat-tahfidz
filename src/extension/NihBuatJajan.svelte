@@ -56,6 +56,6 @@
 <a
   onclick={dapatkanUlang}
   href="https://www.nihbuatjajan.com/{username}"
-  class="fixed bottom-2 right-2 btn btn-primary z-[999]"
+  class="fixed bottom-2 right-2 btn btn-danger z-[999]"
   target="_blank">Support</a
 >
