@@ -32,13 +32,13 @@
                 <tr>
                   <th></th>
                   <th>Baru</th>
-                  <th>PJ</th>
-                  <th>PS</th>
+                  <th>Juziyah</th>
+                  <th>Syahadah</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><Trophy></Trophy></td>
+                  <td class="w-13%"><Trophy></Trophy></td>
                   <td>3 hari</td>
                   <td>5 hari</td>
                   <td>8 hari</td>
