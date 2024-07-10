@@ -4,5 +4,7 @@
   import NihBuatJajan from "./extension/NihBuatJajan.svelte";
 </script>
 
-<Router {routes} />
 <NihBuatJajan username="mzaini30"></NihBuatJajan>
+<div class="mb-5">
+  <Router {routes} />
+</div>

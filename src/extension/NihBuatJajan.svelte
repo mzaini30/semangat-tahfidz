@@ -32,9 +32,15 @@
 </script>
 
 {#if triggerTampil}
-  <div class="fixed top-0 left-0 w-full z-[999]" out:fade>
-    <div class="alert alert-success flex justify-between" role="alert">
-      <div>
+  <div
+    class="fixed top-0 left-0 md:bottom-2 md:!top-auto md:left-2 w-full md:w-min z-[999]"
+    out:fade
+  >
+    <div
+      class="alert alert-success md:mb-0 flex justify-between md:space-x-3"
+      role="alert"
+    >
+      <div class="whitespace-nowrap [&_.dialog]:hidden">
         {@html tampil}
       </div>
       <button
