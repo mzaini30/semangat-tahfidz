@@ -3,6 +3,8 @@
   import Jam from "../icon/jam.svelte";
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
+  let data = $state([]);
+  data = JSON.parse(localStorage.getItem("data")) || [];
 </script>
 
 <div class="container py-3">
