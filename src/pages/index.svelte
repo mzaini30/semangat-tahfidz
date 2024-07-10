@@ -50,7 +50,13 @@
                   <td>8 hari</td>
                 </tr>
                 <tr>
+                  <td>Mulai</td>
                   <td></td>
+                  <td><input type="checkbox" /></td>
+                  <td><input type="checkbox" /></td>
+                </tr>
+                <tr>
+                  <td>Selesai</td>
                   <td><input type="checkbox" /></td>
                   <td><input type="checkbox" /></td>
                   <td><input type="checkbox" /></td>
