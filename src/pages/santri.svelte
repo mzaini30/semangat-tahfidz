@@ -17,7 +17,7 @@
     santri = [
       ...santri,
       {
-        id: Date.now(),
+        id: crypto.randomUUID(),
         nama: "",
       },
     ];

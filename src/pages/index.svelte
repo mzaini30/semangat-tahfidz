@@ -1,10 +1,44 @@
 <script>
   import Trophy from "../icon/trophy.svelte";
   import Jam from "../icon/jam.svelte";
+  import { getFormattedDate } from "../function";
+  let sekarang = getFormattedDate(new Date());
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
   let data = $state([]);
   data = JSON.parse(localStorage.getItem("data")) || [];
+  // dummy
+  for (let s of santri) {
+    data = [
+      ...data,
+      {
+        id: crypto.randomUUID(),
+        idSantri: s.id,
+        tanggal: "2024-01-01",
+        status: "baru_mulai",
+      },
+      {
+        id: crypto.randomUUID(),
+        idSantri: s.id,
+        tanggal: getFormattedDate(new Date()),
+        status: "baru_mulai",
+      },
+    ];
+  }
+  // /dummy
+  console.log(JSON.stringify(data));
+  let dataTerpilih = data.filter((x) => x.tanggal == sekarang);
+  console.log(JSON.stringify(dataTerpilih));
+  let untukRadio = $state({});
+  for (let x of dataTerpilih) {
+    untukRadio[x.idSantri] = x.status;
+  }
+  console.log(JSON.stringify(untukRadio));
+  $effect(() => {
+    if (untukRadio) {
+      console.log(JSON.stringify(untukRadio));
+    }
+  });
 </script>
 
 <div class="container py-3">
@@ -14,11 +48,15 @@
       <a href="#/santri" class="btn btn-info">+ Santri</a>
     </div>
   </div>
-  <a href="#/konsep" class="w-full btn btn-success text-center uppercase mb-3"
-    >Konsep</a
-  >
+  <div class="grid grid-cols-3 gap-3">
+    <a href="#/konsep" class="w-full btn btn-success text-center uppercase mb-3"
+      >Konsep</a
+    >
+    <button>Masuk</button>
+    <button>Libur</button>
+  </div>
   {#if santri}
-    <div class="space-y-3">
+    <div class="grid gap-3 md:grid-cols-4">
       {#each santri as s}
         <div class="list-group">
           <div class="list-group-item active">
@@ -51,15 +89,64 @@
                 </tr>
                 <tr>
                   <td>Mulai</td>
-                  <td><input type="radio" /></td>
-                  <td><input type="radio" /></td>
-                  <td><input type="radio" /></td>
+                  <td
+                    ><input
+                      type="radio"
+                      bind:group={untukRadio[s.id]}
+                      value="baru_mulai"
+                    /></td
+                  >
+                  <td
+                    ><input
+                      type="radio"
+                      bind:group={untukRadio[s.id]}
+                      value="juziyah_mulai"
+                    /></td
+                  >
+                  <td
+                    ><input
+                      type="radio"
+                      bind:group={untukRadio[s.id]}
+                      value="syahadah_mulai"
+                    /></td
+                  >
                 </tr>
                 <tr>
                   <td>Selesai</td>
-                  <td><input type="radio" /></td>
-                  <td><input type="radio" /></td>
-                  <td><input type="radio" /></td>
+                  <td
+                    ><input
+                      type="radio"
+                      bind:group={untukRadio[s.id]}
+                      value="baru_selesai"
+                    /></td
+                  >
+                  <td
+                    ><input
+                      type="radio"
+                      bind:group={untukRadio[s.id]}
+                      value="juziyah_selesai"
+                    /></td
+                  >
+                  <td
+                    ><input
+                      type="radio"
+                      bind:group={untukRadio[s.id]}
+                      value="syahadah_selesai"
+                    /></td
+                  >
+                </tr>
+                <tr>
+                  <td>Libur</td>
+                  <td
+                    ><input
+                      type="radio"
+                      disabled
+                      bind:group={untukRadio[s.id]}
+                      value="libur"
+                    /></td
+                  >
+                  <td></td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
