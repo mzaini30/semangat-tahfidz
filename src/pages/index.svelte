@@ -51,15 +51,15 @@
                 </tr>
                 <tr>
                   <td>Mulai</td>
-                  <td></td>
-                  <td><input type="checkbox" /></td>
-                  <td><input type="checkbox" /></td>
+                  <td><input type="radio" /></td>
+                  <td><input type="radio" /></td>
+                  <td><input type="radio" /></td>
                 </tr>
                 <tr>
                   <td>Selesai</td>
-                  <td><input type="checkbox" /></td>
-                  <td><input type="checkbox" /></td>
-                  <td><input type="checkbox" /></td>
+                  <td><input type="radio" /></td>
+                  <td><input type="radio" /></td>
+                  <td><input type="radio" /></td>
                 </tr>
               </tbody>
             </table>
