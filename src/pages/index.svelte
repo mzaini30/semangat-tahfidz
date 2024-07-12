@@ -39,6 +39,11 @@
       console.log(JSON.stringify(untukRadio));
     }
   });
+  function jadiLiburSemua() {
+    for (let n in untukRadio) {
+      untukRadio[n] = "libur";
+    }
+  }
 </script>
 
 <div class="container py-3">
@@ -48,12 +53,12 @@
       <a href="#/santri" class="btn btn-info">+ Santri</a>
     </div>
   </div>
-  <div class="grid grid-cols-3 gap-3">
-    <a href="#/konsep" class="w-full btn btn-success text-center uppercase mb-3"
-      >Konsep</a
+  <div class="grid grid-cols-3 gap-3 mb-3 text-center">
+    <a href="#/konsep" class="btn btn-primary uppercase">Konsep</a>
+    <button class="btn btn-success uppercase">Masuk</button>
+    <button onclick={jadiLiburSemua} class="btn btn-danger uppercase"
+      >Libur</button
     >
-    <button>Masuk</button>
-    <button>Libur</button>
   </div>
   {#if santri}
     <div class="grid gap-3 md:grid-cols-4">
