@@ -5,7 +5,8 @@
   import { watch } from "runed";
 
   // let sekarang = getFormattedDate(new Date());
-  let sekarang = "2024-07-18";
+  let sekarang = "2024-07-18"; // TODO: jangan lupa dikembalikan
+
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
 
