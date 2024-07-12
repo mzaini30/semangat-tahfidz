@@ -22,6 +22,7 @@
     "bootstrap": "5.3.3",
     "dexie": "^4.0.7",
     "kumpulan-tools": "^1.0.0",
+    "runed": "^0.15.0",
     "svelte-spa-router": "^4.0.1",
     "terser": "^5.31.1",
     "vite-plugin-pages-svelte": "0.0.1"

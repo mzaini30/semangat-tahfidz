@@ -2,51 +2,72 @@
   import Trophy from "../icon/trophy.svelte";
   import Jam from "../icon/jam.svelte";
   import { getFormattedDate } from "../function";
+  import { watch } from "runed";
   let sekarang = getFormattedDate(new Date());
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
   let data = $state([]);
   data = JSON.parse(localStorage.getItem("data")) || [];
-  let terakhir = data.filter((x) => x.tanggal == getFormattedDate(new Date()));
+  let terakhir = data.filter((x) => x.tanggal == sekarang);
   console.log(terakhir);
   if (terakhir.length == 0) {
-    console.log("Nggak ada");
+    for (let s of santri) {
+      terakhir = [
+        ...terakhir,
+        {
+          id: crypto.randomUUID(),
+          idSantri: s.id,
+          tanggal: getFormattedDate(new Date()),
+          status: "libur", // harusnya dapatkan dari data terakhir
+        },
+      ];
+      data = [...data, ...terakhir];
+      localStorage.setItem("data", JSON.stringify(data));
+    }
   }
-  // dummy
-  // for (let s of santri) {
-  //   data = [
-  //     ...data,
-  //     {
-  //       id: crypto.randomUUID(),
-  //       idSantri: s.id,
-  //       tanggal: "2024-01-01",
-  //       status: "baru_mulai",
-  //     },
-  //     {
-  //       id: crypto.randomUUID(),
-  //       idSantri: s.id,
-  //       tanggal: getFormattedDate(new Date()),
-  //       status: "baru_mulai",
-  //     },
-  //   ];
-  // }
-  // /dummy
-  console.log(JSON.stringify(data));
-  let dataTerpilih = data.filter((x) => x.tanggal == sekarang);
-  console.log(JSON.stringify(dataTerpilih));
   let untukRadio = $state({});
-  for (let x of dataTerpilih) {
-    untukRadio[x.idSantri] = x.status;
+  for (let x of terakhir) {
+    // untukRadio[x.idSantri] = x.status;
+    untukRadio[x.idSantri] = {
+      id: x.id,
+      tanggal: x.tanggal,
+      status: x.status,
+    };
   }
   console.log(JSON.stringify(untukRadio));
-  $effect(() => {
-    if (untukRadio) {
+  watch(
+    () => untukRadio,
+    () => {
       console.log(JSON.stringify(untukRadio));
-    }
-  });
+      // let normal = [];
+      for (let n in untukRadio) {
+        data = data.filter((x) => x.id != untukRadio[n].id);
+        data = [
+          ...data,
+          {
+            id: untukRadio[n].id,
+            tanggal: untukRadio[n].tanggal,
+            status: untukRadio[n].status,
+            idSantri: n,
+          },
+        ];
+        // normal = [
+        //   ...normal,
+        //   {
+        //     id: untukRadio[n].id,
+        //     tanggal: untukRadio[n].tanggal,
+        //     status: untukRadio[n].status,
+        //     idSantri: n,
+        //   },
+        // ];
+      }
+      localStorage.setItem("data", JSON.stringify(data));
+      // console.log(normal);
+    },
+  );
   function jadiLiburSemua() {
     for (let n in untukRadio) {
-      untukRadio[n] = "libur";
+      untukRadio[n].status = "libur";
     }
   }
 </script>
@@ -102,21 +123,21 @@
                   <td
                     ><input
                       type="radio"
-                      bind:group={untukRadio[s.id]}
+                      bind:group={untukRadio[s.id].status}
                       value="baru_mulai"
                     /></td
                   >
                   <td
                     ><input
                       type="radio"
-                      bind:group={untukRadio[s.id]}
+                      bind:group={untukRadio[s.id].status}
                       value="juziyah_mulai"
                     /></td
                   >
                   <td
                     ><input
                       type="radio"
-                      bind:group={untukRadio[s.id]}
+                      bind:group={untukRadio[s.id].status}
                       value="syahadah_mulai"
                     /></td
                   >
@@ -126,21 +147,21 @@
                   <td
                     ><input
                       type="radio"
-                      bind:group={untukRadio[s.id]}
+                      bind:group={untukRadio[s.id].status}
                       value="baru_selesai"
                     /></td
                   >
                   <td
                     ><input
                       type="radio"
-                      bind:group={untukRadio[s.id]}
+                      bind:group={untukRadio[s.id].status}
                       value="juziyah_selesai"
                     /></td
                   >
                   <td
                     ><input
                       type="radio"
-                      bind:group={untukRadio[s.id]}
+                      bind:group={untukRadio[s.id].status}
                       value="syahadah_selesai"
                     /></td
                   >
@@ -151,7 +172,7 @@
                     ><input
                       type="radio"
                       disabled
-                      bind:group={untukRadio[s.id]}
+                      bind:group={untukRadio[s.id].status}
                       value="libur"
                     /></td
                   >
