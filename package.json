@@ -20,6 +20,7 @@
     "@popperjs/core": "^2.11.8",
     "@vitejs/plugin-legacy": "^5.4.1",
     "bootstrap": "5.3.3",
+    "collect.js": "^4.36.1",
     "dexie": "^4.0.7",
     "kumpulan-tools": "^1.0.0",
     "runed": "^0.15.0",

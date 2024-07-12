@@ -3,68 +3,81 @@
   import Jam from "../icon/jam.svelte";
   import { getFormattedDate } from "../function";
   import { watch } from "runed";
-  import { untrack } from "svelte";
-  let sekarang = getFormattedDate(new Date());
+
+  // let sekarang = getFormattedDate(new Date());
+  let sekarang = "2024-07-18";
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
+
   let data = $state([]);
   data = JSON.parse(localStorage.getItem("data")) || [];
+
+  let statusTanpaLibur = $state([]);
+
+  for (let s of santri) {
+    let tanpaLibur = data.filter(
+      (x) => x.status != "libur" && x.idSantri == s.id,
+    );
+    tanpaLibur = tanpaLibur[tanpaLibur.length - 1];
+    console.log(tanpaLibur);
+    statusTanpaLibur.push(tanpaLibur);
+  }
+
   let terakhir = data.filter((x) => x.tanggal == sekarang);
-  console.log(terakhir);
   if (terakhir.length == 0) {
     for (let s of santri) {
-      terakhir = [
-        ...terakhir,
-        {
-          id: crypto.randomUUID(),
-          idSantri: s.id,
-          tanggal: getFormattedDate(new Date()),
-          status: "libur", // harusnya dapatkan dari data terakhir
-        },
-      ];
-      data = [...data, ...terakhir];
+      let status =
+        statusTanpaLibur.filter((x) => x?.idSantri == s.id)[0]?.status ||
+        "baru_mulai";
+      // let status = tanpaLibur?.status || "baru_mulai";
+      terakhir.push({
+        id: crypto.randomUUID(),
+        idSantri: s.id,
+        tanggal: sekarang,
+        status,
+      });
       localStorage.setItem("data", JSON.stringify(data));
     }
+    console.log(statusTanpaLibur);
   }
+
+  function jadiTanpaLiburSemua() {
+    for (let n in untukRadio) {
+      let status = statusTanpaLibur.filter((x) => x.idSantri == n)[0];
+      console.log(status);
+      untukRadio[n].status = status?.status;
+    }
+  }
+
   let untukRadio = $state({});
+
   for (let x of terakhir) {
-    // untukRadio[x.idSantri] = x.status;
     untukRadio[x.idSantri] = {
       id: x.id,
       tanggal: x.tanggal,
       status: x.status,
     };
   }
-  console.log(JSON.stringify(untukRadio));
-  $effect(() => {
-    if (untukRadio) {
-      console.log(JSON.stringify(untukRadio));
-      // let normal = [];
-      for (let n in untukRadio) {
-        data = data.filter((x) => x.id != untukRadio[n].id);
-        data = [
-          ...data,
-          {
+
+  for (let n in untukRadio) {
+    watch(
+      () => untukRadio[n].status,
+      () => {
+        console.log(JSON.stringify(untukRadio));
+        for (let n in untukRadio) {
+          data = data.filter((x) => x.id != untukRadio[n].id);
+          data.push({
             id: untukRadio[n].id,
             tanggal: untukRadio[n].tanggal,
             status: untukRadio[n].status,
             idSantri: n,
-          },
-        ];
-        // normal = [
-        //   ...normal,
-        //   {
-        //     id: untukRadio[n].id,
-        //     tanggal: untukRadio[n].tanggal,
-        //     status: untukRadio[n].status,
-        //     idSantri: n,
-        //   },
-        // ];
-      }
-      localStorage.setItem("data", JSON.stringify(data));
-      // console.log(normal);
-    }
-  });
+          });
+        }
+        localStorage.setItem("data", JSON.stringify(data));
+      },
+    );
+  }
+
   function jadiLiburSemua() {
     for (let n in untukRadio) {
       untukRadio[n].status = "libur";
@@ -81,7 +94,9 @@
   </div>
   <div class="grid grid-cols-3 gap-3 mb-3 text-center">
     <a href="#/konsep" class="btn btn-primary uppercase">Konsep</a>
-    <button class="btn btn-success uppercase">Masuk</button>
+    <button onclick={jadiTanpaLiburSemua} class="btn btn-success uppercase"
+      >Masuk</button
+    >
     <button onclick={jadiLiburSemua} class="btn btn-danger uppercase"
       >Libur</button
     >
