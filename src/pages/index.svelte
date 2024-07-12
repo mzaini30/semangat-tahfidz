@@ -36,36 +36,33 @@
     };
   }
   console.log(JSON.stringify(untukRadio));
-  function effectUntukRadio() {
-    console.log(JSON.stringify(untukRadio));
-    // let normal = [];
-    for (let n in untukRadio) {
-      data = data.filter((x) => x.id != untukRadio[n].id);
-      data = [
-        ...data,
-        {
-          id: untukRadio[n].id,
-          tanggal: untukRadio[n].tanggal,
-          status: untukRadio[n].status,
-          idSantri: n,
-        },
-      ];
-      // normal = [
-      //   ...normal,
-      //   {
-      //     id: untukRadio[n].id,
-      //     tanggal: untukRadio[n].tanggal,
-      //     status: untukRadio[n].status,
-      //     idSantri: n,
-      //   },
-      // ];
-    }
-    localStorage.setItem("data", JSON.stringify(data));
-    // console.log(normal);
-  }
   $effect(() => {
     if (untukRadio) {
-      effectUntukRadio();
+      console.log(JSON.stringify(untukRadio));
+      // let normal = [];
+      for (let n in untukRadio) {
+        data = data.filter((x) => x.id != untukRadio[n].id);
+        data = [
+          ...data,
+          {
+            id: untukRadio[n].id,
+            tanggal: untukRadio[n].tanggal,
+            status: untukRadio[n].status,
+            idSantri: n,
+          },
+        ];
+        // normal = [
+        //   ...normal,
+        //   {
+        //     id: untukRadio[n].id,
+        //     tanggal: untukRadio[n].tanggal,
+        //     status: untukRadio[n].status,
+        //     idSantri: n,
+        //   },
+        // ];
+      }
+      localStorage.setItem("data", JSON.stringify(data));
+      // console.log(normal);
     }
   });
   function jadiLiburSemua() {
