@@ -7,24 +7,29 @@
   santri = JSON.parse(localStorage.getItem("santri")) || [];
   let data = $state([]);
   data = JSON.parse(localStorage.getItem("data")) || [];
-  // dummy
-  for (let s of santri) {
-    data = [
-      ...data,
-      {
-        id: crypto.randomUUID(),
-        idSantri: s.id,
-        tanggal: "2024-01-01",
-        status: "baru_mulai",
-      },
-      {
-        id: crypto.randomUUID(),
-        idSantri: s.id,
-        tanggal: getFormattedDate(new Date()),
-        status: "baru_mulai",
-      },
-    ];
+  let terakhir = data.filter((x) => x.tanggal == getFormattedDate(new Date()));
+  console.log(terakhir);
+  if (terakhir.length == 0) {
+    console.log("Nggak ada");
   }
+  // dummy
+  // for (let s of santri) {
+  //   data = [
+  //     ...data,
+  //     {
+  //       id: crypto.randomUUID(),
+  //       idSantri: s.id,
+  //       tanggal: "2024-01-01",
+  //       status: "baru_mulai",
+  //     },
+  //     {
+  //       id: crypto.randomUUID(),
+  //       idSantri: s.id,
+  //       tanggal: getFormattedDate(new Date()),
+  //       status: "baru_mulai",
+  //     },
+  //   ];
+  // }
   // /dummy
   console.log(JSON.stringify(data));
   let dataTerpilih = data.filter((x) => x.tanggal == sekarang);
