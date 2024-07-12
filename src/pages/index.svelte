@@ -8,22 +8,32 @@
   let data = $state([]);
   data = JSON.parse(localStorage.getItem("data")) || [];
   // dummy
-  for (let s of santri) {
-    data = [
-      ...data,
-      {
-        id: crypto.randomUUID(),
-        idSantri: s.id,
-        tanggal: "2024-01-01",
-        status: "baru_mulai",
-      },
-      {
-        id: crypto.randomUUID(),
-        idSantri: s.id,
-        tanggal: getFormattedDate(new Date()),
-        status: "baru_mulai",
-      },
-    ];
+  for (let n in santri) {
+    data[crypto.randomUUID()] = {
+      idSantri: n,
+      tanggal: "2024-01-01",
+      status: "baru_mulai",
+    };
+    data[crypto.randomUUID()] = {
+      idSantri: n,
+      tanggal: getFormattedDate(new Date()),
+      status: "baru_mulai",
+    };
+    // data = [
+    //   ...data,
+    //   {
+    //     id: crypto.randomUUID(),
+    //     idSantri: s.id,
+    //     tanggal: "2024-01-01",
+    //     status: "baru_mulai",
+    //   },
+    //   {
+    //     id: crypto.randomUUID(),
+    //     idSantri: s.id,
+    //     tanggal: getFormattedDate(new Date()),
+    //     status: "baru_mulai",
+    //   },
+    // ];
   }
   // /dummy
   console.log(JSON.stringify(data));
