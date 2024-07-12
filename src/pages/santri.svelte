@@ -14,16 +14,13 @@
   }
   function tambah(event) {
     event.preventDefault();
-    santri[crypto.randomUUID()] = {
-      nama: "",
-    };
-    // santri = [
-    //   ...santri,
-    //   {
-    //     id: crypto.randomUUID(),
-    //     nama: "",
-    //   },
-    // ];
+    santri = [
+      ...santri,
+      {
+        id: crypto.randomUUID(),
+        nama: "",
+      },
+    ];
   }
 </script>
 
