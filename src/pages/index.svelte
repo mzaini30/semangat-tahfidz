@@ -3,6 +3,7 @@
   import Jam from "../icon/jam.svelte";
   import { getFormattedDate } from "../function";
   import { watch } from "runed";
+  import { untrack } from "svelte";
   let sekarang = getFormattedDate(new Date());
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
@@ -35,36 +36,38 @@
     };
   }
   console.log(JSON.stringify(untukRadio));
-  watch(
-    () => untukRadio,
-    () => {
-      console.log(JSON.stringify(untukRadio));
-      // let normal = [];
-      for (let n in untukRadio) {
-        data = data.filter((x) => x.id != untukRadio[n].id);
-        data = [
-          ...data,
-          {
-            id: untukRadio[n].id,
-            tanggal: untukRadio[n].tanggal,
-            status: untukRadio[n].status,
-            idSantri: n,
-          },
-        ];
-        // normal = [
-        //   ...normal,
-        //   {
-        //     id: untukRadio[n].id,
-        //     tanggal: untukRadio[n].tanggal,
-        //     status: untukRadio[n].status,
-        //     idSantri: n,
-        //   },
-        // ];
-      }
-      localStorage.setItem("data", JSON.stringify(data));
-      // console.log(normal);
-    },
-  );
+  function effectUntukRadio() {
+    console.log(JSON.stringify(untukRadio));
+    // let normal = [];
+    for (let n in untukRadio) {
+      data = data.filter((x) => x.id != untukRadio[n].id);
+      data = [
+        ...data,
+        {
+          id: untukRadio[n].id,
+          tanggal: untukRadio[n].tanggal,
+          status: untukRadio[n].status,
+          idSantri: n,
+        },
+      ];
+      // normal = [
+      //   ...normal,
+      //   {
+      //     id: untukRadio[n].id,
+      //     tanggal: untukRadio[n].tanggal,
+      //     status: untukRadio[n].status,
+      //     idSantri: n,
+      //   },
+      // ];
+    }
+    localStorage.setItem("data", JSON.stringify(data));
+    // console.log(normal);
+  }
+  $effect(() => {
+    if (untukRadio) {
+      effectUntukRadio();
+    }
+  });
   function jadiLiburSemua() {
     for (let n in untukRadio) {
       untukRadio[n].status = "libur";
