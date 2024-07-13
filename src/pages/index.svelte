@@ -2,16 +2,114 @@
   import Trophy from "../icon/trophy.svelte";
   import Jam from "../icon/jam.svelte";
   import { getFormattedDate } from "../function";
+  import collect from "collect.js";
   import { watch } from "runed";
 
   // let sekarang = getFormattedDate(new Date());
-  let sekarang = "2024-07-18"; // TODO: jangan lupa dikembalikan
+  let sekarang = "2024-07-21"; // TODO: jangan lupa dikembalikan
 
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
+  console.log(santri);
 
   let data = $state([]);
   data = JSON.parse(localStorage.getItem("data")) || [];
+
+  let kesimpulan = $state([]);
+  function generateStatistik() {
+    let dataKesimpulan = [];
+    kesimpulan = [];
+    dataKesimpulan = JSON.parse(localStorage.getItem("data")) || [];
+    dataKesimpulan = dataKesimpulan.filter((x) => x.status != "libur");
+    // kesimpulan = collect(kesimpulan).groupBy("idSantri").all();
+    for (let x of santri) {
+      let datanya = dataKesimpulan.filter((y) => y.idSantri == x.id);
+      console.log(datanya);
+      let terkumpul = {
+        baru: [],
+        juziyah: [],
+        syahadah: [],
+      };
+      let indexBaru = 0;
+      let indexJuziyah = 0;
+      let indexSyahadah = 0;
+      for (let n in datanya) {
+        if (
+          datanya[n].status == "baru_mulai" ||
+          datanya[n].status == "baru_selesai"
+        ) {
+          if (+n == 0) {
+            terkumpul.baru[indexBaru] = 1;
+          } else if (
+            datanya[+n - 1].status == "baru_mulai" ||
+            datanya[+n - 1].status == "baru_selesai"
+          ) {
+            terkumpul.baru[indexBaru] += 1;
+          } else if (
+            datanya[+n - 1].status != "baru_mulai" &&
+            datanya[+n - 1].status != "baru_selesai"
+          ) {
+            indexBaru += 1;
+            terkumpul.baru[indexBaru] = 1;
+          }
+        }
+        // terkumpul.baru = terkumpul.baru.filter((x) => x);
+
+        if (
+          datanya[n].status == "juziyah_mulai" ||
+          datanya[n].status == "juziyah_selesai"
+        ) {
+          if (+n == 0) {
+            terkumpul.juziyah[indexJuziyah] = 1;
+          } else if (
+            datanya[+n - 1].status == "juziyah_mulai" ||
+            datanya[+n - 1].status == "juziyah_selesai"
+          ) {
+            terkumpul.juziyah[indexJuziyah] += 1;
+          } else if (
+            datanya[+n - 1].status != "juziyah_mulai" &&
+            datanya[+n - 1].status != "juziyah_selesai"
+          ) {
+            indexJuziyah += 1;
+            terkumpul.juziyah[indexJuziyah] = 1;
+          }
+        }
+        // terkumpul.juziyah = terkumpul.juziyah.filter((x) => x);
+
+        if (
+          datanya[n].status == "syahadah_mulai" ||
+          datanya[n].status == "syahadah_selesai"
+        ) {
+          if (+n == 0) {
+            terkumpul.syahadah[indexSyahadah] = 1;
+          } else if (
+            datanya[+n - 1].status == "syahadah_mulai" ||
+            datanya[+n - 1].status == "syahadah_selesai"
+          ) {
+            terkumpul.syahadah[indexSyahadah] += 1;
+          } else if (
+            datanya[+n - 1].status != "syahadah_mulai" &&
+            datanya[+n - 1].status != "syahadah_selesai"
+          ) {
+            indexSyahadah += 1;
+            terkumpul.syahadah[indexSyahadah] = 1;
+          }
+        }
+        // terkumpul.syahadah = terkumpul.syahadah.filter((x) => x);
+      }
+      console.log(terkumpul);
+      kesimpulan.push({
+        id: crypto.randomUUID(),
+        idSantri: x.id,
+        baru: [],
+        juziyah: [],
+        syahadah: [],
+      });
+    }
+    console.log(JSON.stringify(dataKesimpulan));
+    console.log(JSON.stringify(kesimpulan));
+  }
+  generateStatistik();
 
   let statusTanpaLibur = $state([]);
 
@@ -75,6 +173,7 @@
           });
         }
         localStorage.setItem("data", JSON.stringify(data));
+        generateStatistik();
       },
     );
   }
@@ -135,7 +234,7 @@
                   <td>8 hari</td>
                 </tr>
                 <tr>
-                  <td>Mulai</td>
+                  <td>Persiapan</td>
                   <td
                     ><input
                       type="radio"
@@ -159,7 +258,7 @@
                   >
                 </tr>
                 <tr>
-                  <td>Selesai</td>
+                  <td>Sudah</td>
                   <td
                     ><input
                       type="radio"
