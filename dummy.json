@@ -1,0 +1,41 @@
+[
+  {
+    "id": "9c1f0fae-b5ad-42f4-b759-6b50f8972e07",
+    "idSantri": "9f190f57-268b-4fcb-9922-7ec551a3ef78",
+    "baru": [1, 1],
+    "juziyah": [2, 2],
+    "syahadah": [1],
+    "baruTerakhir": 1,
+    "juziyahTerakhir": 2,
+    "syahadahTerakhir": 1,
+    "baruTerkecil": 1,
+    "juziyahTerkecil": 2,
+    "syahadahTerkecil": 1
+  },
+  {
+    "id": "e63d8686-62ce-4777-8771-60c0c467d1e0",
+    "idSantri": "e949b74b-b203-46ec-9bf1-a4b0403bedf2",
+    "baru": [1],
+    "juziyah": [1],
+    "syahadah": [3, 2],
+    "baruTerakhir": 1,
+    "juziyahTerakhir": 1,
+    "syahadahTerakhir": 2,
+    "baruTerkecil": 1,
+    "juziyahTerkecil": 1,
+    "syahadahTerkecil": 2
+  },
+  {
+    "id": "4d52d186-d3a2-4366-925f-d317b772803f",
+    "idSantri": "82ed05aa-4bc7-4c03-ae2f-1b0ab25ec418",
+    "baru": [1, 2],
+    "juziyah": [3],
+    "syahadah": [1],
+    "baruTerakhir": 2,
+    "juziyahTerakhir": 3,
+    "syahadahTerakhir": 1,
+    "baruTerkecil": 1,
+    "juziyahTerkecil": 3,
+    "syahadahTerkecil": 1
+  }
+]
