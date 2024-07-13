@@ -98,9 +98,15 @@
       kesimpulan.push({
         id: crypto.randomUUID(),
         idSantri: x.id,
-        baru: terkumpul.baru,
+        baru: terkumpul.baru.filter((x) => x),
         juziyah: terkumpul.juziyah.filter((x) => x),
         syahadah: terkumpul.syahadah.filter((x) => x),
+        baruTerakhir: terkumpul.baru.filter((x) => x).at(-1),
+        juziyahTerakhir: terkumpul.juziyah.filter((x) => x).at(-1),
+        syahadahTerakhir: terkumpul.syahadah.filter((x) => x).at(-1),
+        baruTerkecil: Math.min(...terkumpul.baru.filter((x) => x)),
+        juziyahTerkecil: Math.min(...terkumpul.juziyah.filter((x) => x)),
+        syahadahTerkecil: Math.min(...terkumpul.syahadah.filter((x) => x)),
       });
     }
     console.log(JSON.stringify(dataKesimpulan));
