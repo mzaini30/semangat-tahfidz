@@ -5,8 +5,8 @@
   import collect from "collect.js";
   import { watch } from "runed";
 
-  // let sekarang = getFormattedDate(new Date());
-  let sekarang = "2024-07-21"; // TODO: jangan lupa dikembalikan
+  let sekarang = getFormattedDate(new Date());
+  // let sekarang = "2024-07-16"; // TODO: jangan lupa dikembalikan
 
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
@@ -41,13 +41,15 @@
           if (+n == 0) {
             terkumpul.baru[indexBaru] = 1;
           } else if (
-            datanya[+n - 1].status == "baru_mulai" ||
-            datanya[+n - 1].status == "baru_selesai"
+            datanya[+n - 1].status == "baru_mulai"
+            //   ||
+            // datanya[+n - 1].status == "baru_selesai"
           ) {
             terkumpul.baru[indexBaru] += 1;
           } else if (
-            datanya[+n - 1].status != "baru_mulai" &&
-            datanya[+n - 1].status != "baru_selesai"
+            datanya[+n - 1].status != "baru_mulai"
+            //   &&
+            // datanya[+n - 1].status != "baru_selesai"
           ) {
             indexBaru += 1;
             terkumpul.baru[indexBaru] = 1;
@@ -107,6 +109,15 @@
         baruTerkecil: Math.min(...terkumpul.baru.filter((x) => x)),
         juziyahTerkecil: Math.min(...terkumpul.juziyah.filter((x) => x)),
         syahadahTerkecil: Math.min(...terkumpul.syahadah.filter((x) => x)),
+        baruMerah:
+          Math.min(...terkumpul.baru.filter((x) => x)) <
+          terkumpul.baru.filter((x) => x).at(-1),
+        juziyahMerah:
+          Math.min(...terkumpul.juziyah.filter((x) => x)) <
+          terkumpul.juziyah.filter((x) => x).at(-1),
+        syahadahMerah:
+          Math.min(...terkumpul.syahadah.filter((x) => x)) <
+          terkumpul.syahadah.filter((x) => x).at(-1),
       });
     }
     console.log(JSON.stringify(dataKesimpulan));
@@ -128,10 +139,19 @@
   let terakhir = data.filter((x) => x.tanggal == sekarang);
   if (terakhir.length == 0) {
     for (let s of santri) {
-      let status =
-        statusTanpaLibur.filter((x) => x?.idSantri == s.id)[0]?.status ||
-        "baru_mulai";
-      // let status = tanpaLibur?.status || "baru_mulai";
+      let status = "baru_mulai";
+      let statusSebelumnya = statusTanpaLibur.filter(
+        (x) => x?.idSantri == s.id,
+      )[0]?.status;
+      if (
+        statusSebelumnya == "juziyah_mulai" ||
+        statusSebelumnya == "syahadah_mulai"
+      ) {
+        status = statusSebelumnya;
+      }
+      // let status =
+      //   statusTanpaLibur.filter((x) => x?.idSantri == s.id)[0]?.status ||
+      //   "baru_mulai";
       terakhir.push({
         id: crypto.randomUUID(),
         idSantri: s.id,
@@ -209,8 +229,12 @@
       {#each santri as s}
         <div class="list-group">
           <div class="list-group-item active">
-            <div class="uppercase font-bold">
-              {s.nama}
+            <div class="uppercase font-bold flex items-center justify-between">
+              <div>
+                {s.nama}
+              </div>
+              <a href="#/history/{s.id}" class="btn btn-info text-sm">History</a
+              >
             </div>
           </div>
           <div class="list-group-item">
@@ -226,15 +250,61 @@
               <tbody>
                 <tr>
                   <td class="w-13%"><Trophy></Trophy></td>
-                  <td>3 hari</td>
-                  <td>5 hari</td>
-                  <td>8 hari</td>
+                  <td>
+                    {#if kesimpulan.filter((x) => x.idSantri == s.id)[0].baruTerakhir}
+                      {kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                        .baruTerkecil - 1} hari
+                    {/if}
+                  </td>
+                  <td>
+                    {#if kesimpulan.filter((x) => x.idSantri == s.id)[0].juziyahTerakhir}
+                      {kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                        .juziyahTerkecil - 1} hari
+                    {/if}
+                  </td>
+                  <td>
+                    {#if kesimpulan.filter((x) => x.idSantri == s.id)[0].syahadahTerakhir}
+                      {kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                        .syahadahTerkecil - 1} hari
+                    {/if}
+                  </td>
                 </tr>
                 <tr>
                   <td><Jam></Jam></td>
-                  <td class="!bg-red-500 !text-white">10 hari</td>
-                  <td>5 hari</td>
-                  <td>8 hari</td>
+                  <!-- <td class="!bg-red-500 !text-white">10 hari</td> -->
+                  <td
+                    class={kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                      .baruMerah
+                      ? "!bg-red-500 !text-white"
+                      : null}
+                  >
+                    {#if kesimpulan.filter((x) => x.idSantri == s.id)[0].baruTerakhir}
+                      {kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                        .baruTerakhir - 1} hari
+                    {/if}
+                  </td>
+                  <td
+                    class={kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                      .juziyahMerah
+                      ? "!bg-red-500 !text-white"
+                      : null}
+                  >
+                    {#if kesimpulan.filter((x) => x.idSantri == s.id)[0].juziyahTerakhir}
+                      {kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                        .juziyahTerakhir - 1} hari
+                    {/if}
+                  </td>
+                  <td
+                    class={kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                      .syahadahMerah
+                      ? "!bg-red-500 !text-white"
+                      : null}
+                  >
+                    {#if kesimpulan.filter((x) => x.idSantri == s.id)[0].syahadahTerakhir}
+                      {kesimpulan.filter((x) => x.idSantri == s.id)[0]
+                        .syahadahTerakhir - 1} hari
+                    {/if}
+                  </td>
                 </tr>
                 <tr>
                   <td>Persiapan</td>
