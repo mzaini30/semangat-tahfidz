@@ -5,10 +5,5 @@ import pages from "vite-plugin-pages-svelte";
 import legacy from "@vitejs/plugin-legacy";
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    svelte(),
-    UnoCSS(),
-    pages(),
-    // legacy()
-  ],
+  plugins: [svelte(), UnoCSS(), pages(), legacy()],
 });
