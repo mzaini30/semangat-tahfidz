@@ -53,7 +53,6 @@
             terkumpul.baru[indexBaru] = 1;
           }
         }
-        // terkumpul.baru = terkumpul.baru.filter((x) => x);
 
         if (
           datanya[n].status == "juziyah_mulai" ||
@@ -74,7 +73,6 @@
             terkumpul.juziyah[indexJuziyah] = 1;
           }
         }
-        // terkumpul.juziyah = terkumpul.juziyah.filter((x) => x);
 
         if (
           datanya[n].status == "syahadah_mulai" ||
@@ -95,15 +93,14 @@
             terkumpul.syahadah[indexSyahadah] = 1;
           }
         }
-        // terkumpul.syahadah = terkumpul.syahadah.filter((x) => x);
       }
       console.log(terkumpul);
       kesimpulan.push({
         id: crypto.randomUUID(),
         idSantri: x.id,
-        baru: [],
-        juziyah: [],
-        syahadah: [],
+        baru: terkumpul.baru,
+        juziyah: terkumpul.juziyah.filter((x) => x),
+        syahadah: terkumpul.syahadah.filter((x) => x),
       });
     }
     console.log(JSON.stringify(dataKesimpulan));
