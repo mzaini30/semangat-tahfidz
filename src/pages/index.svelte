@@ -6,7 +6,7 @@
   import { watch } from "runed";
 
   let sekarang = getFormattedDate(new Date());
-  // let sekarang = "2024-07-16"; // TODO: jangan lupa dikembalikan
+  // let sekarang = "2024-07-17"; // TODO: jangan lupa dikembalikan
 
   let santri = $state([]);
   santri = JSON.parse(localStorage.getItem("santri")) || [];
@@ -226,7 +226,7 @@
   </div>
   {#if santri}
     <div class="grid gap-3 md:grid-cols-4">
-      {#each santri as s}
+      {#each santri.sort((a, b) => (a.nama > b.nama ? 1 : -1)) as s}
         <div class="list-group">
           <div class="list-group-item active">
             <div class="uppercase font-bold flex items-center justify-between">
@@ -308,62 +308,68 @@
                 </tr>
                 <tr>
                   <td>Persiapan</td>
-                  <td
-                    ><input
-                      type="radio"
-                      bind:group={untukRadio[s.id].status}
-                      value="baru_mulai"
-                    /></td
-                  >
-                  <td
-                    ><input
-                      type="radio"
-                      bind:group={untukRadio[s.id].status}
-                      value="juziyah_mulai"
-                    /></td
-                  >
-                  <td
-                    ><input
-                      type="radio"
-                      bind:group={untukRadio[s.id].status}
-                      value="syahadah_mulai"
-                    /></td
-                  >
+                  {#if untukRadio[s.id]?.status}
+                    <td
+                      ><input
+                        type="radio"
+                        bind:group={untukRadio[s.id].status}
+                        value="baru_mulai"
+                      /></td
+                    >
+                    <td
+                      ><input
+                        type="radio"
+                        bind:group={untukRadio[s.id].status}
+                        value="juziyah_mulai"
+                      /></td
+                    >
+                    <td
+                      ><input
+                        type="radio"
+                        bind:group={untukRadio[s.id].status}
+                        value="syahadah_mulai"
+                      /></td
+                    >
+                  {/if}
                 </tr>
                 <tr>
                   <td>Sudah</td>
-                  <td
-                    ><input
-                      type="radio"
-                      bind:group={untukRadio[s.id].status}
-                      value="baru_selesai"
-                    /></td
-                  >
-                  <td
-                    ><input
-                      type="radio"
-                      bind:group={untukRadio[s.id].status}
-                      value="juziyah_selesai"
-                    /></td
-                  >
-                  <td
-                    ><input
-                      type="radio"
-                      bind:group={untukRadio[s.id].status}
-                      value="syahadah_selesai"
-                    /></td
-                  >
+                  {#if untukRadio[s.id]?.status}
+                    <td
+                      ><input
+                        type="radio"
+                        bind:group={untukRadio[s.id].status}
+                        value="baru_selesai"
+                      /></td
+                    >
+                    <td
+                      ><input
+                        type="radio"
+                        bind:group={untukRadio[s.id].status}
+                        value="juziyah_selesai"
+                      /></td
+                    >
+                    <td
+                      ><input
+                        type="radio"
+                        bind:group={untukRadio[s.id].status}
+                        value="syahadah_selesai"
+                      /></td
+                    >
+                  {/if}
                 </tr>
                 <tr>
                   <td>Libur</td>
-                  <td
-                    ><input
-                      type="radio"
-                      disabled
-                      bind:group={untukRadio[s.id].status}
-                      value="libur"
-                    /></td
-                  >
+                  {#if untukRadio[s.id]?.status}
+                    <td
+                      ><input
+                        type="radio"
+                        disabled
+                        bind:group={untukRadio[s.id].status}
+                        value="libur"
+                      /></td
+                    >
+                  {/if}
                   <td></td>
                   <td></td>
                 </tr>
